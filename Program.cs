@@ -43,7 +43,9 @@ builder.Services.AddAuthorization(options =>
 });
 
 // builder.Services.AddScoped<IEntityReportService, IEntityReportService>();//Agregamos el Service de Reporteria
+builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IEntityReportService, EntityReportService>(); // Agregamos el Service de Reporteria
 
 var app = builder.Build();
