@@ -1,0 +1,60 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<h1 class="text-center mb-4">Iniciar sesión</h1>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    
+                    <!-- Correo electrónico -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label fw-bold text-white">Email</label>
+                        <input asp-for="Input.Email" class="form-control rounded-pill" autocomplete="username" aria-required="true" placeholder="nombre@gmail.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label fw-bold text-white">Contraseña</label>
+                        <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="current-password" aria-required="true" placeholder="contraseña" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Recordarme -->
+                    <div class="mb-3 form-check">
+                        <label asp-for="Input.RememberMe" class="form-label text-white">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            Recordarme
+                        </label>
+                    </div>
+
+                    <!-- Botón Login -->
+                    <div class="d-grid mb-3">
+                        <button id="login-submit" type="submit" class="btn btn-primary rounded-pill">Iniciar sesión</button>
+                    </div>
+
+                    <!-- Enlaces adicionales
+                    <div class="text-center">
+                        <p><a id="forgot-password" class="text-decoration-none" asp-page="./ForgotPassword">¿Olvidaste tu contraseña?</a></p>
+                        <p><a class="text-decoration-none" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar nuevo usuario</a></p>
+                        <p><a id="resend-confirmation" class="text-decoration-none" asp-page="./ResendEmailConfirmation">Reenviar confirmación de correo</a></p>
+                    </div>
+                     -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

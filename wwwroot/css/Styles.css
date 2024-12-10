@@ -1,0 +1,57 @@
+/* Estilo general para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    text-align: left;
+    background-color: #f9f9f9; /* Fondo claro */
+    border: 1px solid #ddd;
+}
+
+/* Estilo para las celdas del encabezado */
+table thead th {
+    background-color: #007BFF; /* Azul fuerte */
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+    border: 1px solid #ddd;
+}
+
+/* Estilo para las celdas del cuerpo */
+table tbody td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    color: #333; /* Texto oscuro */
+}
+
+/* Fondo alternado para filas */
+table tbody tr:nth-child(even) {
+    background-color: #eaf4fc; /* Azul claro */
+}
+
+/* Fondo al pasar el mouse */
+table tbody tr:hover {
+    background-color: #cfe9ff; /* Azul más intenso */
+}
+
+/* Estilo para el botón de navegación */
+.btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Efecto hover en el botón */
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #eaf4fc;
+    text-decoration: none;
+}

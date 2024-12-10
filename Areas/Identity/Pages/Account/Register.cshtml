@@ -1,0 +1,81 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1 class="text-center mb-4">Crear una cuenta</h1>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <h4 class="mb-4">Crear una cuenta nueva.</h4>
+
+                    <!-- Campo de Email -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control rounded-pill" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo de Contraseña -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password">Contraseña</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo Confirmar Contraseña -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ConfirmPassword" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Name" class="form-control rounded-pill" placeholder="Nombre" />
+                        <label asp-for="Input.Name">Nombre</label>
+                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName" class="form-control rounded-pill" placeholder="Apellido" />
+                        <label asp-for="Input.LastName">Apellido</label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+
+                    <!-- DNI -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.DNI" class="form-control rounded-pill" placeholder="DNI" />
+                        <label asp-for="Input.DNI">DNI</label>
+                        <span asp-validation-for="Input.DNI" class="text-danger"></span>
+                    </div>
+
+                    <!-- Subir Documento -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Document" type="file" class="form-control rounded-pill" accept=".pdf, .jpeg, .jpg, .png" />
+                        <label asp-for="Input.Document">Documento Médico</label>
+                        <span asp-validation-for="Input.Document" class="text-danger"></span>
+                    </div>
+
+                    <!-- Botón de Registro -->
+                    <div class="d-grid">
+                        <button id="registerSubmit" type="submit" class="btn btn-primary rounded-pill btn-lg">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

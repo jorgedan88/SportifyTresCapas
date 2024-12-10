@@ -1,0 +1,47 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Confirmación de Registro";
+}
+
+<h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                @if (Model.DisplayConfirmAccountLink)
+                {
+                        <dt class="col-sm-12 card-text mt-3">
+                            <i class="fas fa-envelope"></i> Confirmación de Cuenta
+                        </dt>
+                        <dd class="col-sm-12 card-text">
+                            Por favor, haz click en el siguiente enlace para confirmar tu cuenta:
+                        </dd>
+                        <dd class="col-sm-12 text-center">
+                            <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="btn btn-outline-primary rounded-pill">
+                                Confirmar Cuenta
+                            </a>
+                        </dd>
+                }
+                else
+                {
+                    <dl class="row">
+                        <dt class="col-sm-12 card-text text-success">
+                            <i class="fas fa-check-circle"></i> Revisa tu correo
+                        </dt>
+                        <dd class="col-sm-12 card-text">
+                            Por favor, revisa tu correo electrónico para confirmar tu cuenta.
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a asp-page="/Index" class="btn btn-outline-light btn-bold rounded-pill">
+        Volver a Inicio
+    </a>
+</div>

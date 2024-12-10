@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportify-Back", "Sportify-Back.csproj", "{E1E606D4-1340-4EE8-A5AC-E08DECB8591A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1E606D4-1340-4EE8-A5AC-E08DECB8591A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E606D4-1340-4EE8-A5AC-E08DECB8591A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E606D4-1340-4EE8-A5AC-E08DECB8591A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E606D4-1340-4EE8-A5AC-E08DECB8591A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBC1A9C5-99A5-4654-BAC6-E8C1B263BC21}
+	EndGlobalSection
+EndGlobal

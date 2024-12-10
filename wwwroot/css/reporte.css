@@ -1,0 +1,39 @@
+/* Estilo para el contenedor */
+div {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center; /* Centra el contenido */
+}
+
+/* Estilo para el encabezado */
+h2 {
+    color: #007BFF; /* Azul fuerte */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para el botón */
+button {
+    background-color: #007BFF; /* Azul fuerte */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto hover para el botón */
+button:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+    transform: translateY(-2px); /* Mueve el botón hacia arriba */
+}
+
+/* Efecto activo para el botón */
+button:active {
+    background-color: #004085; /* Azul más intenso */
+    transform: translateY(0); /* Restablece la posición */
+}
