@@ -1,174 +1,112 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Sportify_back.Models;
+using Sportify_Back.Services;
 
 namespace Sportify_Back.Controllers
 {
     public class TeachersController : Controller
     {
-        private readonly SportifyDbContext _context;
+        private readonly ITeacherService _teacherService;
 
-        public TeachersController(SportifyDbContext context)
+        public TeachersController(ITeacherService teacherService)
         {
-            _context = context;
+            _teacherService = teacherService;
         }
 
         [Authorize(Policy = "AdministradorOnly")]
-        // GET: Teachers
         public async Task<IActionResult> Index()
         {
-            var sportifyDbContext = _context.Teachers.Include(t => t.Activities);
-            return View(await sportifyDbContext.ToListAsync());
-        }
-
-        [Authorize(Policy = "AdministradorOnly")]
-        // GET: Teachers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var teachers = await _context.Teachers
-                .Include(t => t.Activities)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-
-            //ViewData["Activities"] = new SelectList(_context.Activities, "Id", "NameActivity");
+            var teachers = await _teacherService.GetAllAsync();
             return View(teachers);
         }
 
-        // GET: Teachers/Create
-       
         [Authorize(Policy = "AdministradorOnly")]
-        public IActionResult Create()
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewData["ActivitiesId"] = new SelectList(_context.Activities, "Id", "NameActivity");
+            if (id == null) return NotFound();
+
+            var teacher = await _teacherService.GetByIdAsync(id.Value);
+            if (teacher == null) return NotFound();
+
+            return View(teacher);
+        }
+
+        [Authorize(Policy = "AdministradorOnly")]
+        public async Task<IActionResult> Create()
+        {
+            var activities = await _teacherService.GetAllActivitiesAsync();
+            ViewData["ActivitiesId"] = new SelectList(activities, "Id", "NameActivity");
             return View();
         }
 
-        // POST: Teachers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Policy = "AdministradorOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Dni,Mail,Phone,Address,ActivitiesId,Active")] Teachers teachers)
+        public async Task<IActionResult> Create([Bind("Id,Name,Dni,Mail,Phone,Address,ActivitiesId,Active")] Teachers teacher)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(teachers);
-                await _context.SaveChangesAsync();
+                await _teacherService.CreateAsync(teacher);
                 return RedirectToAction(nameof(Index));
             }
-           ViewData["ActivitiesId"] = new SelectList(_context.Activities, "Id", "NameActivity",  teachers.ActivitiesId);
-            return View(teachers);
+
+            var activities = await _teacherService.GetAllActivitiesAsync();
+            ViewData["ActivitiesId"] = new SelectList(activities, "Id", "NameActivity", teacher.ActivitiesId);
+            return View(teacher);
         }
 
-
         [Authorize(Policy = "AdministradorOnly")]
-        // GET: Teachers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var teachers = await _context.Teachers.FindAsync(id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-            ViewData["ActivitiesId"] = new SelectList(_context.Activities, "Id", "NameActivity", teachers.ActivitiesId);
-            return View(teachers);
+            var teacher = await _teacherService.GetByIdAsync(id.Value);
+            if (teacher == null) return NotFound();
+
+            var activities = await _teacherService.GetAllActivitiesAsync();
+            ViewData["ActivitiesId"] = new SelectList(activities, "Id", "NameActivity", teacher.ActivitiesId);
+            return View(teacher);
         }
 
-        // POST: Teachers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Policy = "AdministradorOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Dni,Mail,Phone,Address,ActivitiesId,Active")] Teachers teachers)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Dni,Mail,Phone,Address,ActivitiesId,Active")] Teachers teacher)
         {
-            if (id != teachers.Id)
-            {
-                return NotFound();
-            }
+            if (id != teacher.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(teachers);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TeachersExists(teachers.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _teacherService.UpdateAsync(teacher);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivitiesId"] = new SelectList(_context.Activities, "Id", "NameActivity", teachers.ActivitiesId);
-            return View(teachers);
+
+            var activities = await _teacherService.GetAllActivitiesAsync();
+            ViewData["ActivitiesId"] = new SelectList(activities, "Id", "NameActivity", teacher.ActivitiesId);
+            return View(teacher);
         }
 
-        // GET: Teachers/Delete/5
         [Authorize(Policy = "AdministradorOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var teachers = await _context.Teachers
-                .Include(t => t.Activities)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
+            var teacher = await _teacherService.GetByIdAsync(id.Value);
+            if (teacher == null) return NotFound();
 
-            return View(teachers);
+            return View(teacher);
         }
-        // POST: Teachers/Delete/5
+
         [Authorize(Policy = "AdministradorOnly")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var teachers = await _context.Teachers.FindAsync(id);
-            if (teachers != null)
-            {
-                _context.Teachers.Remove(teachers);
-            }
-
-            await _context.SaveChangesAsync();
+            await _teacherService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TeachersExists(int id)
-        {
-            return _context.Teachers.Any(e => e.Id == id);
         }
     }
 }

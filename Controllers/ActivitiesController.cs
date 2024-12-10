@@ -1,162 +1,101 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Sportify_back.Models;
+using Sportify_Back.Services;
+using System.Threading.Tasks;
 
 namespace Sportify_Back.Controllers
 {
     public class ActivitiesController : Controller
     {
-        private readonly SportifyDbContext _context;
+        private readonly IActivityService _activityService;
 
-        public ActivitiesController(SportifyDbContext context)
+        public ActivitiesController(IActivityService activityService)
         {
-            _context = context;
+            _activityService = activityService;
         }
 
-        // GET: Activities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Activities.ToListAsync());
-        }
-
-        // GET: Activities/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var activities = await _context.Activities
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (activities == null)
-            {
-
-            
-                return NotFound();
-            }
-
+            var activities = await _activityService.GetAllAsync();
             return View(activities);
         }
 
-        // GET: Activities/Create
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var activity = await _activityService.GetByIdAsync(id.Value);
+            if (activity == null) return NotFound();
+
+            return View(activity);
+        }
+
         [Authorize(Policy = "AdministradorOnly")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Activities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "AdministradorOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NameActivity,Description,Active")] Activities activities)
+        public async Task<IActionResult> Create([Bind("Id,NameActivity,Description,Active")] Activities activity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activities);
-                await _context.SaveChangesAsync();
+                await _activityService.CreateAsync(activity);
                 return RedirectToAction(nameof(Index));
             }
-            return View(activities);
+
+            return View(activity);
         }
 
-        // GET: Activities/Edit/5
         [Authorize(Policy = "AdministradorOnly")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var activities = await _context.Activities.FindAsync(id);
-            if (activities == null)
-            {
-                return NotFound();
-            }
-            return View(activities);
+            var activity = await _activityService.GetByIdAsync(id.Value);
+            if (activity == null) return NotFound();
+
+            return View(activity);
         }
 
-        // POST: Activities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "AdministradorOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NameActivity,Description,Active")] Activities activities)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NameActivity,Description,Active")] Activities activity)
         {
-            if (id != activities.Id)
-            {
-                return NotFound();
-            }
+            if (id != activity.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(activities);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ActivitiesExists(activities.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _activityService.UpdateAsync(activity);
                 return RedirectToAction(nameof(Index));
             }
-            return View(activities);
+
+            return View(activity);
         }
 
-        // GET: Activities/Delete/5
         [Authorize(Policy = "AdministradorOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var activities = await _context.Activities
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (activities == null)
-            {
-                return NotFound();
-            }
+            var activity = await _activityService.GetByIdAsync(id.Value);
+            if (activity == null) return NotFound();
 
-            return View(activities);
+            return View(activity);
         }
 
-        // POST: Activities/Delete/5
+        [Authorize(Policy = "AdministradorOnly")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activities = await _context.Activities.FindAsync(id);
-            if (activities != null)
-            {
-                _context.Activities.Remove(activities);
-            }
-
-            await _context.SaveChangesAsync();
+            await _activityService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ActivitiesExists(int id)
-        {
-            return _context.Activities.Any(e => e.Id == id);
         }
     }
 }
