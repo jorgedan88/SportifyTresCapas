@@ -57,7 +57,6 @@ namespace Sportify_Back.Services
             return _context.Classes.Any(c => c.Id == id);
         }
 
-        // Nuevos métodos
         public async Task<List<Activities>> GetAllActivitiesAsync()
         {
             return await _context.Activities.ToListAsync() ?? new List<Activities>();

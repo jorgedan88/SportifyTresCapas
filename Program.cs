@@ -12,23 +12,23 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar explícitamente el archivo appsettings.json
+
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-// Add services to the container.
+
 builder.Services.AddDbContext<SportifyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnectionString")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Configuramos Identity con la fábrica de claims personalizada
+
 builder.Services.AddDefaultIdentity<ApplicationUser>
     (options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<SportifyDbContext>()
-    .AddClaimsPrincipalFactory<AdditionalUserClaimsPrincipalFactory>(); // Agregamos aca la fábrica de claims aquí
+    .AddClaimsPrincipalFactory<AdditionalUserClaimsPrincipalFactory>(); 
 
 builder.Services.AddControllersWithViews();
 
-// Configurar la autenticación por cookies (para no generar un controller para el login, que seria otra opcion)
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
@@ -39,18 +39,18 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdministradorOnly", policy =>
-        policy.RequireClaim("Profile", "Administrador")); // Verifica el claim "Profile" para ser "Administrador"
+        policy.RequireClaim("Profile", "Administrador")); 
 });
 
-// builder.Services.AddScoped<IEntityReportService, IEntityReportService>();//Agregamos el Service de Reporteria
+
 builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IClassService, ClassService>();
-builder.Services.AddScoped<IEntityReportService, EntityReportService>(); // Agregamos el Service de Reporteria
+builder.Services.AddScoped<IEntityReportService, EntityReportService>(); 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -66,7 +66,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // Agregamos la autenticacion
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllerRoute(

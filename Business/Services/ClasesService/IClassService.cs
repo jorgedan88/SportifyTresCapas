@@ -13,7 +13,6 @@ namespace Sportify_Back.Services
         Task DeleteAsync(int id);
         bool ClassExists(int id);
 
-        // Nuevos métodos
         Task<List<Activities>> GetAllActivitiesAsync();
         Task<List<Teachers>> GetAllTeachersAsync();
     }
